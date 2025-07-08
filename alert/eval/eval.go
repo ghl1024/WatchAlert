@@ -234,7 +234,9 @@ func (t *AlertRule) Recover(tenantId, ruleId string, eventCacheKey models.AlertE
 				logc.Errorf(t.ctx.Ctx, "Failed to transition to recovered state for fingerprint %s: %v", fingerprint, err)
 				continue
 			}
+			// 恢复后继续处理下一个事件
 			t.ctx.Redis.PendingRecover().Delete(tenantId, ruleId, fingerprint)
+			continue
 		}
 
 		// 更新告警事件
